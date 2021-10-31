@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
       this.templates = {};
       this.getHandlebarsTemplates();
       this.getContacts();
+      this.form = null;
     }
 
     async getContacts() {
@@ -46,6 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
         this.templates.form(data)
       );
 
+      this.form = document.querySelector('form');
+
+      this.form.addEventListener('submit', event => {
+        event.preventDefault();
+        console.log(`Why won't you print`);
+      });
       this.setDiv();
     }
 
@@ -63,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
       app.renderForm();
     }
 
-    if (['Submit', 'Cancel'].includes(event.target.textContent)) {
+    if (['Cancel'].includes(event.target.textContent)) {
       app.renderContacts(app.contacts);
     }
   });
