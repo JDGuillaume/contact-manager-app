@@ -1,0 +1,11 @@
+<script id="contacts" type='text/x-handlebars'>
+  {{> addAndSearch}}
+  {{#if contacts}}
+  <ul class="media-list row contacts-container">
+    {{# each contacts}}
+    {{> contact}}
+    {{/each}}
+  </ul>
+  {{else}}
+  {{> noContacts}}
+</script>

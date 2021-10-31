@@ -1,0 +1,22 @@
+<script id="contact" type='text/x-handlebars' data-type="partial">
+  <li class="media col-md-3 col-sm-4" data-id='{{id}}'>
+    <div class="media-heading">
+      <h3>{{name}}</h3>
+    </div>
+    <div class="media-body">
+      <dl>
+        <dt>Phone Number:</dt>
+        <dd>{{number}}</dd>
+        <dt>Email:</dt>
+        <dd>{{email}}</dd>
+      </dl>
+    </div>
+    <div class="contact-btn-wrapper">
+      <a href="#contacts/edit/1" class="edit-contact btn btn-outline">
+        <span class="glyphicon glyphicon-pencil"></span>Edit</a>
+      <a href="#contacts/delete/1" class="delete-contact btn btn-outline">
+        <span class="glyphicon glyphicon-trash"></span>Delete</a>
+    </div>
+    <hr>
+  </li>
+</script>
