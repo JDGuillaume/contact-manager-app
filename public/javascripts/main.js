@@ -1,13 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
   class ContactManager {
     constructor() {
-      this.contacts = null;
+      // Grab Initial Elements
       this.container = document.querySelector('.main-container');
       this.setDiv();
+
+      // Set Initial State
+      this.contacts = null;
+      this.form = null;
+
+      // Grab Handlebar Teampltes and Set to Templates Object
       this.templates = {};
       this.getHandlebarsTemplates();
+
+      // Retrieve Initial Data
       this.getContacts();
-      this.form = null;
     }
 
     async getContacts() {
@@ -47,17 +54,33 @@ document.addEventListener('DOMContentLoaded', () => {
         this.templates.form(data)
       );
 
-      this.form = document.querySelector('form');
-
-      this.form.addEventListener('submit', event => {
-        event.preventDefault();
-        console.log(`Why won't you print`);
-      });
       this.setDiv();
+
+      this.form = document.querySelector('form');
+      this.bindSubmitListener();
     }
 
     setDiv() {
       this.div = document.querySelector('[style=""]');
+    }
+
+    bindSubmitListener() {
+      console.log('Binding Submit Listner');
+
+      this.form.addEventListener('submit', event => {
+        event.preventDefault();
+
+        const data = new FormData(this.form);
+        const queryString = new URLSearchParams(data);
+
+        fetch('api/contacts', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+          },
+          body: queryString,
+        });
+      });
     }
   }
 
@@ -71,6 +94,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (['Cancel'].includes(event.target.textContent)) {
+      app.renderContacts(app.contacts);
+    }
+
+    if (['Submit'].includes(event.target.textContent)) {
+      app.form.requestSubmit();
       app.renderContacts(app.contacts);
     }
   });
