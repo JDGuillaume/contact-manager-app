@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Content Manager</title>
   <link rel="stylesheet" href="./stylesheets/base.css">
-  <script src="/javascripts/jquery.js"></script>
-  <script src="/javascripts/handlebars.js"></script>
+  <script src="./javascripts/jquery.js"></script>
+  <script src="./javascripts/handlebars.js"></script>
 </head>
 <body>
   <header class="bs-header">
@@ -27,37 +27,36 @@
       <p>Developed by <a href="https://github.com/JDGuillaume">Joey Guillaume</a> in collaboration with <a href="https://launchschool.com/">Launch School</a>.</p>
     </div>
   </div>
-  <script src='./javascripts/main.js'></script>
 
   <script id="form" type='text/x-handlebars'>
     <div style="">
-      <h2 class="page-header text-center"> Create Contact</h2>
+      <h2 class="page-header text-center">Create Contact</h2>
       <form role="form" class="form-horizontal contact-form" action=''>
         <div class="form-group has-feedback form-group-name">
           <label class="col-sm-4 control-label">Full name:</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control contact-name-input" value="">
+            <input type="text" class="form-control contact-name-input" value="{{#if (isdefined full_name)}}{{full_name}}{{else}}{{/if}}">
             <small class="help-block"></small>
           </div>
         </div>
         <div class="form-group has-feedback form-group-email">
           <label class="col-sm-4 control-label">Email address:</label>
           <div class="col-sm-6">
-            <input type="email" class="form-control contact-email-input" value="">
+            <input type="email" class="form-control contact-email-input" value="{{#if (isdefined email)}}{{email}}{{else}}{{/if}}">
             <small class="help-block"></small>
           </div>
         </div>
         <div class="form-group has-feedback form-group-phone">
           <label class="col-sm-4 control-label">Telephone number:</label>
           <div class="col-sm-6">
-            <input type="tel" class="form-control contact-phone-input" value="">
+            <input type="tel" class="form-control contact-phone-input" value="{{#if (isdefined phone_number)}}{{phone_number}}{{else}}{{/if}}">
             <small class="help-block"></small>
           </div>
         </div>
         <div class="form-group has-feedback form-group-tags">
           <label class="col-sm-4 control-label">Tags:</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control contact-tag-input" value="">
+            <input type="text" class="form-control contact-tag-input" value="{{#if (isdefined tags)}}{{tags}}{{else}}{{/if}}">
             <small class="help-block"></small>
           </div>
         </div>
@@ -129,6 +128,7 @@
 </script>
 
 <script id="noContacts" type='text/x-handlebars' data-type="partial">
+  {{> addAndSearch}}
   <ul class="media-list row contacts-container"></ul>
   <div class="empty-contacts-placeholder">
     <div class="well text-center">
@@ -138,6 +138,6 @@
   </div>
   <div class="empty-search-contacts-placeholder"></div>
 </script>
-
+<script src='./javascripts/main.js'></script>
 </body>
 </html>
