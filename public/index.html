@@ -128,16 +128,18 @@
 </script>
 
 <script id="noContacts" type='text/x-handlebars' data-type="partial">
-  {{> addAndSearch}}
-  <ul class="media-list row contacts-container"></ul>
-  <div class="empty-contacts-placeholder">
-    <div class="well text-center">
-      <h3>There are no contacts.</h3>
-      <a href="#contacts/new" class="btn btn-lg btn-outline">Add Contact</a>
+  <div style="">
+    {{> addAndSearch}}
+    <ul class="media-list row contacts-container"></ul>
+    <div class="empty-contacts-placeholder">
+      <div class="well text-center">
+        <h3>There are no contacts.</h3>
+        <a href="#contacts/new" class="btn btn-lg btn-outline">Add Contact</a>
+      </div>
     </div>
+    <div class="empty-search-contacts-placeholder"></div>
   </div>
-  <div class="empty-search-contacts-placeholder"></div>
-</script>
+  </script>
 <script src='./javascripts/main.js'></script>
 </body>
 </html>

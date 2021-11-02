@@ -1,7 +1,7 @@
 class Model {
   constructor() {
     this.contacts = [];
-    this.getAllContacts();
+    // this.getAllContacts();
   }
 
   getAllContacts() {
@@ -89,8 +89,6 @@ class View {
     // Get Handlebars Set Up
     this.templates = {};
     this.getHandlebarsTemplates();
-
-    this.displayContacts();
   }
 
   getElement(selector) {
@@ -142,6 +140,26 @@ class View {
       this.app.removeChild(this.app.children[count]);
     }
   }
+
+  bindAddContactButton(handler) {
+    this.app.firstElementChild.addEventListener('click', event => {
+      event.preventDefault();
+
+      if (event.target.textContent === 'Add Contact') {
+        handler();
+      }
+    });
+  }
+
+  bindCancelButton(handler) {
+    this.app.firstElementChild.addEventListener('click', event => {
+      event.preventDefault();
+
+      if (event.target.textContent === 'Cancel') {
+        handler();
+      }
+    });
+  }
 }
 
 class Controller {
@@ -151,6 +169,7 @@ class Controller {
 
     // Display Initial State
     this.onContactChange(this.model.contacts);
+    this.view.bindAddContactButton(this.renderForm);
   }
 
   onContactChange(contacts) {
@@ -172,6 +191,16 @@ class Controller {
   handleUpdateContact(id, contact) {
     this.model.updateContact(id, contact);
   }
+
+  renderContacts = () => {
+    this.view.displayContacts(this.model.contacts);
+    this.view.bindAddContactButton(this.renderForm);
+  };
+
+  renderForm = () => {
+    this.view.displayForm();
+    this.view.bindCancelButton(this.renderContacts);
+  };
 }
 
 const app = new Controller(new Model(), new View());
