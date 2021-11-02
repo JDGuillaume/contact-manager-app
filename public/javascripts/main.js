@@ -76,6 +76,8 @@ class Model {
     if (!response.ok) {
       throw new Error(`An HTTP ${response.status} Error occurred.`);
     }
+
+    return response;
   }
 }
 
