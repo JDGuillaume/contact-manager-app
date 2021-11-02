@@ -90,7 +90,7 @@ class View {
     this.templates = {};
     this.getHandlebarsTemplates();
 
-    this.displayForm();
+    this.displayContacts();
   }
 
   getElement(selector) {
@@ -114,7 +114,9 @@ class View {
     });
   }
 
-  displayContacts(data) {
+  displayContacts(data = []) {
+    this.removeExistingElements();
+
     // If there are contacts, display them.
     if (data.length) {
       this.app.insertAdjacentHTML('afterbegin', this.templates.contacts({ contacts: data }));
@@ -125,10 +127,19 @@ class View {
   }
 
   displayForm(data, id) {
+    this.removeExistingElements();
+
     if (id) {
       this.app.insertAdjacentHTML('afterbegin', this.templates.form(data));
     } else {
       this.app.insertAdjacentHTML('afterbegin', this.templates.form());
+    }
+  }
+
+  removeExistingElements() {
+    // Remove Existing Elements
+    for (let count = 0; count < this.app.children.length; count++) {
+      this.app.removeChild(this.app.children[count]);
     }
   }
 }
