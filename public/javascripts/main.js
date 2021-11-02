@@ -148,6 +148,29 @@ class Controller {
   constructor(model, view) {
     this.model = model;
     this.view = view;
+
+    // Display Initial State
+    this.onContactChange(this.model.contacts);
+  }
+
+  onContactChange(contacts) {
+    this.view.displayContacts(contacts);
+  }
+
+  handleDeleteContact(id) {
+    this.model.deleteContact(id);
+  }
+
+  handleGetContact(id) {
+    this.model.getContact(id);
+  }
+
+  handleAddContact(contact) {
+    this.model.addContact(contact);
+  }
+
+  handleUpdateContact(id, contact) {
+    this.model.updateContact(id, contact);
   }
 }
 
