@@ -1,24 +1,23 @@
+/* eslint-disable no-console */
 class Model {
   constructor() {
     this.contacts = [];
   }
 
   getAllContacts() {
-    // Retrieve All Contacts and Set State to Current Contact List
-    this._myFetchJSON('api/contacts')
-      .then(contacts => {
-        this.contacts = contacts;
-        console.log('All contacts were successfully retrieved.');
-      })
-      .catch(() => console.log(`An error occurred while attempting to retrieve your contact list.`));
+    try {
+      return this._myFetchJSON('api/contacts');
+    } catch {
+      throw new Error('An error occurred while attempting to retrieve your contact list.');
+    }
   }
 
   getContact(id) {
-    this._myFetchJSON(`api/contacts/${id}`)
-      .then(contact => {
-        return contact;
-      })
-      .catch(() => console.log(`The contact with an ID of ${id} could not be found.`));
+    try {
+      return this._myFetchJSON(`api/contacts/${id}`);
+    } catch {
+      throw new Error(`The contact with an ID of ${id} could not be found.`);
+    }
   }
 
   deleteContact(id) {
@@ -202,12 +201,11 @@ class Controller {
     this.model.bindContactChanged(this.onContactChange);
 
     // Display Initial State
-    this.onContactChange(this.model.contacts);
-    this.view.bindAddContactButton(this.renderForm);
+    this.retrieveAndRenderAllContacts();
   }
 
-  onContactChange = contacts => {
-    this.renderContacts(contacts);
+  onContactChange = () => {
+    this.retrieveAndRenderAllContacts();
   };
 
   handleDeleteContact = id => {
@@ -226,6 +224,15 @@ class Controller {
     this.model.updateContact(id, contact);
   };
 
+  async retrieveAndRenderAllContacts() {
+    this.model.contacts = await this.model.getAllContacts();
+    this.renderContacts(this.model.contacts);
+  }
+
+  renderAllContacts = () => {
+    this.renderContacts(this.model.contacts);
+  };
+
   renderContacts = contacts => {
     this.view.displayContacts(contacts);
     this.view.bindAddContactButton(this.renderForm);
@@ -233,7 +240,7 @@ class Controller {
 
   renderForm = () => {
     this.view.displayForm();
-    this.view.bindCancelButton(this.renderContacts);
+    this.view.bindCancelButton(this.renderAllContacts);
     this.view.bindSubmitButton(this.handleAddContact);
   };
 }
