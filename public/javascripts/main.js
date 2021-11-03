@@ -149,6 +149,21 @@ class View {
     }
   }
 
+  removeNoMatchingSearchResults() {
+    const existingBox = document.getElementById('searchResults');
+
+    if (existingBox) {
+      existingBox.remove();
+    }
+  }
+
+  displayNoMatchingSearchResults(text) {
+    document.querySelector('.empty-contacts-placeholder').remove();
+    this.removeNoMatchingSearchResults();
+
+    this.app.insertAdjacentHTML('beforeend', this.templates.noMatchingContacts({ text }));
+  }
+
   displayClearTags() {
     const existingButton = document.getElementById('clearTags');
 
@@ -396,6 +411,12 @@ class Controller {
     const results = this.model.contacts.filter(item => item.full_name.toLowerCase().includes(text));
     this.renderContacts(results);
     this.view.restoreSearchState(text);
+
+    if (results.length === 0) {
+      this.view.displayNoMatchingSearchResults(text);
+    } else {
+      this.view.removeNoMatchingSearchResults();
+    }
   };
 
   renderForm = () => {

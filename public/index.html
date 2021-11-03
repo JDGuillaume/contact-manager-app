@@ -15,7 +15,7 @@
       <a href="#home">
         <h1>Contact Manager</h1>
       </a>
-      <p>Using Bootstrap, Handlebars, JavaScript, and jQuery in 2021</p>
+      <p>Using Bootstrap, Handlebars, and JavaScript in 2021</p>
     </div>
   </header>
   <div class="container">
@@ -120,10 +120,10 @@
   </div>
 </script>
 
-<script id="noMatchingContacts" type='text/x-handlebars' data-type="partial">
-<div class="empty-search-contacts-placeholder">
+<script id="noMatchingContacts" type='text/x-handlebars'>
+<div id='searchResults' class="empty-search-contacts-placeholder">
   <div class="well text-center">
-    <h3>There are no contacts starting with <strong></strong></h3>
+    <h3>There are no contacts containing <strong>{{text}}</strong>.</h3>
   </div>
 </script>
 
