@@ -238,7 +238,9 @@ class Controller {
   };
 
   handleDeleteContact = id => {
-    this.model.deleteContact(id);
+    if (confirm('Do you want to delete the contact?')) {
+      this.model.deleteContact(id);
+    }
   };
 
   handleGetContact = id => {
