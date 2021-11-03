@@ -159,6 +159,17 @@ class View {
     });
   }
 
+  bindDeleteButton(handler) {
+    this.app.firstElementChild.addEventListener('click', event => {
+      event.preventDefault();
+
+      if (event.target.textContent === 'Delete') {
+        const id = event.target.closest('li').dataset.id;
+        handler(id);
+      }
+    });
+  }
+
   bindSubmitButton(handler) {
     const form = this.getElement('#contactForm');
 
@@ -236,6 +247,7 @@ class Controller {
   renderContacts = contacts => {
     this.view.displayContacts(contacts);
     this.view.bindAddContactButton(this.renderForm);
+    this.view.bindDeleteButton(this.handleDeleteContact);
   };
 
   renderForm = () => {
