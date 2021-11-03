@@ -9,6 +9,7 @@ li dl {
   min-height: 120px;
 }
 
+
 audio,
 canvas,
 video {
@@ -5845,4 +5846,9 @@ tr.visible-print {
  padding-bottom:20px;
  margin-top:40px;
  border-top:1px solid #eee
+}
+
+
+.purple-badge {
+  background-color: rgb(86, 61, 124);
 }

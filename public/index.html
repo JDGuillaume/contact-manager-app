@@ -100,7 +100,7 @@
         <dd>{{email}}</dd>
         {{#if tags}}
         <dt>Tags:</dt>
-        <dd>{{tags}}</dd>
+        <dd>{{#csv tags}}<a href="#" class="badge badge-secondary purple-badge">{{this}}</a>{{/csv}}</dd>
         {{/if}}
       </dl>
     </div>

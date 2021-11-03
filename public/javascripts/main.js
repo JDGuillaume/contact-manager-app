@@ -120,6 +120,17 @@ class View {
     Handlebars.registerHelper('isdefined', value => {
       return value !== undefined;
     });
+
+    Handlebars.registerHelper('csv', (data, options) => {
+      data = data.split(',');
+      let results = '';
+
+      data.forEach(item => {
+        results += options.fn(item);
+      });
+
+      return results;
+    });
   }
 
   displayContacts(data = []) {
@@ -183,6 +194,17 @@ class View {
     });
   }
 
+  bindTagButtons(handler) {
+    this.app.firstElementChild.addEventListener('click', event => {
+      event.preventDefault();
+
+      if ([...event.target.classList].includes('purple-badge')) {
+        const tag = event.target.textContent;
+        handler(tag);
+      }
+    });
+  }
+
   bindSubmitButton(handler) {
     const form = this.getElement('#contactForm');
 
@@ -230,7 +252,7 @@ class View {
       isValid = false;
     }
 
-    // If the phone number is invalid
+    // If the phone number is invalid, fail the check.
     if (!inputs[2].length || !/^\d{10}$/.test(inputs[2])) {
       inputElements[2].nextElementSibling.textContent = 'Please enter a valid telephone number.';
       isValid = false;
@@ -313,6 +335,12 @@ class Controller {
     this.view.bindAddContactButton(this.renderForm);
     this.view.bindDeleteButton(this.handleDeleteContact);
     this.view.bindEditButton(this.renderFormForUpdate);
+    this.view.bindTagButtons(this.renderContactsWithTag);
+  };
+
+  renderContactsWithTag = tag => {
+    const results = this.model.contacts.filter(item => item.tags.split(',').includes(tag));
+    this.renderContacts(results);
   };
 
   renderForm = () => {
