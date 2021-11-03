@@ -3,28 +3,21 @@
     "id": 1,
     "full_name": "Naveed Fida",
     "email": "nf@example.com",
-    "phone_number": "12345678901",
+    "phone_number": "1234567890",
     "tags": "work,friend"
   },
   {
     "id": 2,
     "full_name": "Victor Reyes",
     "email": "vpr@example.com",
-    "phone_number": "09876543210",
+    "phone_number": "0987654321",
     "tags": "work,friend"
   },
   {
     "id": 3,
     "full_name": "Pete Hanson",
     "email": "ph@example.com",
-    "phone_number": "54321098761",
-    "tags": null
-  },
-  {
-    "full_name": "1",
-    "phone_number": "3",
-    "email": "2",
-    "tags": "4",
-    "id": 4
+    "phone_number": "5432109876",
+    "tags": ""
   }
 ]

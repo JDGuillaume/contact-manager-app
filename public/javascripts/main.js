@@ -191,24 +191,66 @@ class View {
 
       if (event.target.textContent === 'Submit') {
         const id = event.target.closest('form').dataset.id;
-        const inputs = [...document.querySelectorAll('input')].map(input => input.value);
 
-        const data = JSON.stringify({
-          full_name: inputs[0],
-          email: inputs[1],
-          phone_number: inputs[2],
-          tags: inputs[3],
-        });
+        if (this.allFormValuesValid(form)) {
+          const inputs = [...document.querySelectorAll('input')].map(input => input.value);
 
-        console.log(data);
+          const data = JSON.stringify({
+            full_name: inputs[0],
+            email: inputs[1],
+            phone_number: inputs[2],
+            tags: this.removeDuplicateTags(inputs[3]),
+          });
 
-        if (id) {
-          handler(id, data);
-        } else {
-          handler(data);
+          if (id) {
+            handler(id, data);
+          } else {
+            handler(data);
+          }
         }
       }
     });
+  }
+
+  allFormValuesValid(form) {
+    let isValid = true;
+
+    const inputElements = [...document.querySelectorAll('input')];
+    const inputs = [...document.querySelectorAll('input')].map(input => input.value);
+
+    // If there are any non-name characters, fail the check.
+    if (!inputs[0].length || /[^A-Z\s-']+/gi.test(inputs[0])) {
+      inputElements[0].nextElementSibling.textContent = 'Please enter a valid name.';
+      isValid = false;
+    }
+
+    // If the email is invalid, fail the check.
+    if (!inputs[1].length || !/^\S+@\S+\.\S+$/.test(inputs[1])) {
+      inputElements[1].nextElementSibling.textContent = 'Please enter a valid email.';
+      isValid = false;
+    }
+
+    // If the phone number is invalid
+    if (!inputs[2].length || !/^\d{10}$/.test(inputs[2])) {
+      inputElements[2].nextElementSibling.textContent = 'Please enter a valid telephone number.';
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  removeDuplicateTags(tags) {
+    // Split the comma-separated values into an array.
+    const tagsArray = tags.split(',');
+
+    // Normalize the data to lowercase
+    tagsArray.forEach(tag => tag.toLowerCase());
+
+    // Remove duplicates via a set
+    const tagsSet = new Set(tagsArray);
+
+    // Return new tag list.
+    return Array.from(tagsSet).join(',');
   }
 
   bindCancelButton(handler) {
