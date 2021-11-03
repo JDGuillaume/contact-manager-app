@@ -49,19 +49,21 @@ class Model {
   }
 
   updateContact(id, contact) {
-    this._myFetchJSON(`api/contacts/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: contact,
-    })
-      .then(data => {
+    try {
+      this._myFetchJSON(`api/contacts/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: contact,
+      }).then(data => {
         console.log(`${data.full_name} (ID ${data.id}) was updated successfully!`);
-      })
-      .catch(() => console.log(`An error occurred while attempting to update your contact with an ID of ${id}.`));
+      });
 
-    this.onContactChange(this.contacts);
+      this.onContactChange(this.contacts);
+    } catch {
+      throw new Error(`An error occurred while attempting to update your contact with an ID of ${id}.`);
+    }
   }
 
   async _myFetchJSON(resource, options) {
@@ -132,10 +134,10 @@ class View {
     }
   }
 
-  displayForm(data, id) {
+  displayForm(data) {
     this.removeExistingElements();
 
-    if (id) {
+    if (data) {
       this.app.insertAdjacentHTML('afterbegin', this.templates.form(data));
     } else {
       this.app.insertAdjacentHTML('afterbegin', this.templates.form());
@@ -170,6 +172,17 @@ class View {
     });
   }
 
+  bindEditButton(handler) {
+    this.app.firstElementChild.addEventListener('click', event => {
+      event.preventDefault();
+
+      if (event.target.textContent === 'Edit') {
+        const id = event.target.closest('li').dataset.id;
+        handler(id);
+      }
+    });
+  }
+
   bindSubmitButton(handler) {
     const form = this.getElement('#contactForm');
 
@@ -177,6 +190,7 @@ class View {
       event.preventDefault();
 
       if (event.target.textContent === 'Submit') {
+        const id = event.target.closest('form').dataset.id;
         const inputs = [...document.querySelectorAll('input')].map(input => input.value);
 
         const data = JSON.stringify({
@@ -188,7 +202,11 @@ class View {
 
         console.log(data);
 
-        handler(data);
+        if (id) {
+          handler(id, data);
+        } else {
+          handler(data);
+        }
       }
     });
   }
@@ -248,12 +266,20 @@ class Controller {
     this.view.displayContacts(contacts);
     this.view.bindAddContactButton(this.renderForm);
     this.view.bindDeleteButton(this.handleDeleteContact);
+    this.view.bindEditButton(this.renderFormForUpdate);
   };
 
   renderForm = () => {
     this.view.displayForm();
     this.view.bindCancelButton(this.renderAllContacts);
     this.view.bindSubmitButton(this.handleAddContact);
+  };
+
+  renderFormForUpdate = async id => {
+    const contact = await this.model.getContact(id);
+    this.view.displayForm(contact);
+    this.view.bindSubmitButton(this.handleUpdateContact);
+    this.view.bindCancelButton(this.renderAllContacts);
   };
 }
 

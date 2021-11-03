@@ -31,7 +31,7 @@
   <script id="form" type='text/x-handlebars'>
     <div style="">
       <h2 class="page-header text-center">Create Contact</h2>
-      <form action= "" role="form" class="form-horizontal contact-form" id='contactForm'>
+      <form action= "" role="form" class="form-horizontal contact-form" id='contactForm' data-id="{{#if (isdefined id)}}{{id}}{{else}}{{/if}}">
         <div class="form-group has-feedback form-group-name">
           <label class="col-sm-4 control-label">Full Name:</label>
           <div class="col-sm-6">
