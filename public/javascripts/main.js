@@ -255,6 +255,8 @@ class Controller {
 
   async retrieveAndRenderAllContacts() {
     this.model.contacts = await this.model.getAllContacts();
+    console.log('All contacts retrieved successfully.');
+
     this.renderContacts(this.model.contacts);
   }
 
@@ -277,6 +279,8 @@ class Controller {
 
   renderFormForUpdate = async id => {
     const contact = await this.model.getContact(id);
+    console.log(`${contact.full_name} (ID ${id}) retrieved successfully and ready for editing.`);
+
     this.view.displayForm(contact);
     this.view.bindSubmitButton(this.handleUpdateContact);
     this.view.bindCancelButton(this.renderAllContacts);
