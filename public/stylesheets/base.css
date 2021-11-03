@@ -5,6 +5,10 @@ article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,su
  display:block
 }
 
+li dl {
+  min-height: 120px;
+}
+
 audio,
 canvas,
 video {
