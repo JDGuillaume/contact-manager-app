@@ -323,7 +323,12 @@ class View {
 
       if (event.target.textContent === 'Clear Tag Selection') {
         handler();
-        document.getElementById('clearTags').remove();
+
+        const button = document.getElementById('clearTags');
+
+        if (button) {
+          button.remove();
+        }
       }
     });
   }
