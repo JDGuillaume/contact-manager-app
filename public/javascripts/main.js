@@ -1,4 +1,8 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-alert */
+/* eslint-disable babel/camelcase */
 /* eslint-disable no-console */
+
 class Model {
   constructor() {
     this.contacts = [];
@@ -227,7 +231,7 @@ class View {
       if (event.target.textContent === 'Submit') {
         const id = event.target.closest('form').dataset.id;
 
-        if (this.allFormValuesValid(form)) {
+        if (this.allFormValuesValid()) {
           const inputs = [...document.querySelectorAll('input')].map(input => input.value);
 
           const data = JSON.stringify({
@@ -247,7 +251,7 @@ class View {
     });
   }
 
-  allFormValuesValid(form) {
+  allFormValuesValid() {
     let isValid = true;
 
     const inputElements = [...document.querySelectorAll('input')];
@@ -308,6 +312,24 @@ class View {
       }
     });
   }
+
+  bindSearch(handler) {
+    const search = document.getElementById('search');
+
+    search.addEventListener('keyup', event => {
+      event.preventDefault();
+
+      const text = search.value.toLowerCase();
+      handler(text);
+      search.value = text;
+    });
+  }
+
+  restoreSearchState(text) {
+    const search = document.getElementById('search');
+    search.value = text;
+    search.focus();
+  }
 }
 
 class Controller {
@@ -360,6 +382,7 @@ class Controller {
     this.view.bindDeleteButton(this.handleDeleteContact);
     this.view.bindEditButton(this.renderFormForUpdate);
     this.view.bindTagButtons(this.renderContactsWithTag);
+    this.view.bindSearch(this.renderContactsWithSearch);
   };
 
   renderContactsWithTag = tag => {
@@ -367,6 +390,12 @@ class Controller {
     this.renderContacts(results);
     this.view.displayClearTags();
     this.view.bindClearTags(this.renderAllContacts);
+  };
+
+  renderContactsWithSearch = text => {
+    const results = this.model.contacts.filter(item => item.full_name.toLowerCase().includes(text));
+    this.renderContacts(results);
+    this.view.restoreSearchState(text);
   };
 
   renderForm = () => {
