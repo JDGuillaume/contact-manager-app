@@ -10,6 +10,7 @@ li dl {
 }
 
 
+
 audio,
 canvas,
 video {
@@ -5851,4 +5852,9 @@ tr.visible-print {
 
 .purple-badge {
   background-color: rgb(86, 61, 124);
+}
+
+#clearTags {
+  background-color: transparent;
+  color: #563d7c;
 }

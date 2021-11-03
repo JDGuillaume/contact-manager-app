@@ -145,6 +145,19 @@ class View {
     }
   }
 
+  displayClearTags() {
+    const existingButton = document.getElementById('clearTags');
+
+    if (existingButton) {
+      existingButton.remove();
+    }
+
+    this.app.insertAdjacentHTML(
+      'beforeend',
+      '<button type="button" class="btn btn-primary btn-lg" id="clearTags">Clear Tag Selection</button>'
+    );
+  }
+
   displayForm(data) {
     this.removeExistingElements();
 
@@ -284,6 +297,17 @@ class View {
       }
     });
   }
+
+  bindClearTags(handler) {
+    this.app.addEventListener('click', event => {
+      event.preventDefault();
+
+      if (event.target.textContent === 'Clear Tag Selection') {
+        handler();
+        document.getElementById('clearTags').remove();
+      }
+    });
+  }
 }
 
 class Controller {
@@ -341,6 +365,8 @@ class Controller {
   renderContactsWithTag = tag => {
     const results = this.model.contacts.filter(item => item.tags.split(',').includes(tag));
     this.renderContacts(results);
+    this.view.displayClearTags();
+    this.view.bindClearTags(this.renderAllContacts);
   };
 
   renderForm = () => {
