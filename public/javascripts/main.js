@@ -1,7 +1,6 @@
 class Model {
   constructor() {
     this.contacts = [];
-    // this.getAllContacts();
   }
 
   getAllContacts() {
@@ -30,6 +29,8 @@ class Model {
         console.log(`The contact with an ID of ${id} was successfully deleted.`);
       })
       .catch(() => `An error occurred while attempting to delete the contact with an ID of ${id}.`);
+
+    this.onContactChange(this.contacts);
   }
 
   addContact(contact) {
@@ -44,6 +45,8 @@ class Model {
         console.log(`${data.full_name} was added with an ID of ${data.id}.`);
       })
       .catch(() => `An error occurred while attempting to add the contact to our Contacts Manager.`);
+
+    this.onContactChange(this.contacts);
   }
 
   updateContact(id, contact) {
@@ -58,6 +61,8 @@ class Model {
         console.log(`${data.full_name} (ID ${data.id}) was updated successfully!`);
       })
       .catch(() => console.log(`An error occurred while attempting to update your contact with an ID of ${id}.`));
+
+    this.onContactChange(this.contacts);
   }
 
   async _myFetchJSON(resource, options) {
@@ -78,6 +83,10 @@ class Model {
     }
 
     return response;
+  }
+
+  bindContactChanged(callback) {
+    this.onContactChange = callback;
   }
 }
 
@@ -151,6 +160,29 @@ class View {
     });
   }
 
+  bindSubmitButton(handler) {
+    const form = this.getElement('#contactForm');
+
+    form.addEventListener('click', event => {
+      event.preventDefault();
+
+      if (event.target.textContent === 'Submit') {
+        const inputs = [...document.querySelectorAll('input')].map(input => input.value);
+
+        const data = JSON.stringify({
+          full_name: inputs[0],
+          email: inputs[1],
+          phone_number: inputs[2],
+          tags: inputs[3],
+        });
+
+        console.log(data);
+
+        handler(data);
+      }
+    });
+  }
+
   bindCancelButton(handler) {
     this.app.firstElementChild.addEventListener('click', event => {
       event.preventDefault();
@@ -167,39 +199,42 @@ class Controller {
     this.model = model;
     this.view = view;
 
+    this.model.bindContactChanged(this.onContactChange);
+
     // Display Initial State
     this.onContactChange(this.model.contacts);
     this.view.bindAddContactButton(this.renderForm);
   }
 
-  onContactChange(contacts) {
-    this.view.displayContacts(contacts);
-  }
+  onContactChange = contacts => {
+    this.renderContacts(contacts);
+  };
 
-  handleDeleteContact(id) {
+  handleDeleteContact = id => {
     this.model.deleteContact(id);
-  }
+  };
 
-  handleGetContact(id) {
+  handleGetContact = id => {
     this.model.getContact(id);
-  }
+  };
 
-  handleAddContact(contact) {
+  handleAddContact = contact => {
     this.model.addContact(contact);
-  }
+  };
 
-  handleUpdateContact(id, contact) {
+  handleUpdateContact = (id, contact) => {
     this.model.updateContact(id, contact);
-  }
+  };
 
-  renderContacts = () => {
-    this.view.displayContacts(this.model.contacts);
+  renderContacts = contacts => {
+    this.view.displayContacts(contacts);
     this.view.bindAddContactButton(this.renderForm);
   };
 
   renderForm = () => {
     this.view.displayForm();
     this.view.bindCancelButton(this.renderContacts);
+    this.view.bindSubmitButton(this.handleAddContact);
   };
 }
 

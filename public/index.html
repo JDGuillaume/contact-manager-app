@@ -31,23 +31,23 @@
   <script id="form" type='text/x-handlebars'>
     <div style="">
       <h2 class="page-header text-center">Create Contact</h2>
-      <form role="form" class="form-horizontal contact-form" action=''>
+      <form action= "" role="form" class="form-horizontal contact-form" id='contactForm'>
         <div class="form-group has-feedback form-group-name">
-          <label class="col-sm-4 control-label">Full name:</label>
+          <label class="col-sm-4 control-label">Full Name:</label>
           <div class="col-sm-6">
             <input type="text" class="form-control contact-name-input" value="{{#if (isdefined full_name)}}{{full_name}}{{else}}{{/if}}">
             <small class="help-block"></small>
           </div>
         </div>
         <div class="form-group has-feedback form-group-email">
-          <label class="col-sm-4 control-label">Email address:</label>
+          <label class="col-sm-4 control-label">Email Address:</label>
           <div class="col-sm-6">
             <input type="email" class="form-control contact-email-input" value="{{#if (isdefined email)}}{{email}}{{else}}{{/if}}">
             <small class="help-block"></small>
           </div>
         </div>
         <div class="form-group has-feedback form-group-phone">
-          <label class="col-sm-4 control-label">Telephone number:</label>
+          <label class="col-sm-4 control-label">Telephone Number:</label>
           <div class="col-sm-6">
             <input type="tel" class="form-control contact-phone-input" value="{{#if (isdefined phone_number)}}{{phone_number}}{{else}}{{/if}}">
             <small class="help-block"></small>
